@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     lastMessage: {
         fontSize: 16,
         color: 'grey',
+        width: '100%',
     },
 
     time: {
