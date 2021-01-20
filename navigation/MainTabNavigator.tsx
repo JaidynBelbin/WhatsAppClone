@@ -9,6 +9,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ChatScreen from '../screens/ChatScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+
 import { MainTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const MainTab = createMaterialTopTabNavigator<MainTabParamList>();
@@ -20,12 +21,13 @@ export default function MainTabNavigator() {
     <MainTab.Navigator
       initialRouteName="TabOne"
       tabBarOptions={{ 
-        activeTintColor: Colors[colorScheme].background, 
+        activeTintColor: Colors.light.background, 
         style: {
-          backgroundColor: Colors[colorScheme].tint,
+          backgroundColor: Colors.light.tint,
+          marginBottom: 10,
         },
         indicatorStyle: {
-          backgroundColor: Colors[colorScheme].background,
+          backgroundColor: Colors.light.background,
           height: 3,
         },
         labelStyle: {

@@ -10,6 +10,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
 import MainTabNavigator from './MainTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
+import ContactsScreen from '../screens/ContactsScreen';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -28,6 +29,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+
   return (
     <Stack.Navigator screenOptions={{ 
       headerStyle: {
@@ -39,49 +41,57 @@ function RootNavigator() {
       headerTitleAlign: 'left',
       headerTitleStyle: {
         fontWeight: 'bold',
-        
       }
       }}>
         
       <Stack.Screen 
-      name="Root" 
-      component={MainTabNavigator}
-      options = {{
-        title: 'WhatsApp',
-        headerRight: () => (
-          <View style={{ 
-            flexDirection: 'row', 
-            width: 60, 
-            justifyContent: 'space-between', 
-            marginRight: 10}}>
-            <Octicons name = "search" size={22} color = "white" />
-            <MaterialCommunityIcons name = "dots-vertical" size={22} color = "white" />
-          </View>
-        )
-      }} />
+        name="Root" 
+        component={MainTabNavigator}
+        options = {{
+          title: 'WhatsApp',
+          headerRight: () => (
+            <View style={{ 
+              flexDirection: 'row', 
+              width: 60, 
+              justifyContent: 'space-between', 
+              marginRight: 10}}>
+              <Octicons name = "search" size={22} color = "white" />
+              <MaterialCommunityIcons name = "dots-vertical" size={22} color = "white" />
+            </View>
+          )
+        }} 
+      />
 
 
       <Stack.Screen 
-      name="ChatRoom" 
-      component={ChatRoomScreen} 
-      options={({ route }) => ({
-        title: route.params.name,
-        headerRight: () => (
-          <View style={{ 
-            flexDirection: 'row',
-            width: 100,
-            justifyContent: 'space-between',
-            marginRight: 10,
-          }}>
-            <MaterialIcons name="call" size={22} color={'white'} />
-            <FontAwesome5 name="video" size={22} color={'white'} />
-            <MaterialCommunityIcons name="dots-vertical" size={22} color={'white'} />
-          </View>
-        )
+        name="ChatRoom" 
+        component={ChatRoomScreen} 
+        options={({ route }) => ({
+          title: route.params.name,
+          headerRight: () => (
+            <View style={{ 
+              flexDirection: 'row',
+              width: 100,
+              justifyContent: 'space-between',
+              marginRight: 10,
+            }}>
+              <MaterialIcons name="call" size={22} color={'white'} />
+              <FontAwesome5 name="video" size={22} color={'white'} />
+              <MaterialCommunityIcons name="dots-vertical" size={22} color={'white'} />
+            </View>
+          )
 
-      })} />
+        })} 
+      />
+
+      <Stack.Screen 
+        name="Contacts" 
+        component={ContactsScreen} 
+        options={{ title: 'Contacts' }} 
+      />
 
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      
     </Stack.Navigator>
 
   );

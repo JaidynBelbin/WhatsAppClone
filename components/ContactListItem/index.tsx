@@ -2,36 +2,20 @@ import React from 'react';
 import { ChatRoom, User } from '../../types';
 import { Image, TouchableWithoutFeedback} from 'react-native';
 import { Text, View} from '../Themed';
-import styles from './style';
-import moment from 'moment';
+import styles from './styles';
+
 import {useNavigation} from '@react-navigation/native';
 
 /** Allowing multiple related properties to be kept together */
-export type ChatListItemProps = {
-    chatRoom: ChatRoom;
+export type ContactListItemProps = {
     user: User; /** for example */
 }
 
-/** example component showing the use of the second prop in ChatListItemProps */
-const UserListItem = (props: ChatListItemProps) => {
 
-    const name = props.user.name;
+const ContactListItem = (props: ContactListItemProps) => {
 
-    return (
-        <View>
-            {/** */}
-        </View>
-    )
-}
-
-/** Component for each item in the list of chats. */
-const ChatListItem = (props: ChatListItemProps) => {
-
-    /** Destructuring the chatRoom object from props into a variable so 
-     * we can access the id, users[], and lastMessage.
-     */
-    const {chatRoom} = props;
-    const user = chatRoom.users[1];
+    const {user} = props;
+    const name = user.name;
 
     /** Hook to navigate to the new screen when clicking on each chat list item */
     const navigation = useNavigation();
@@ -41,10 +25,7 @@ const ChatListItem = (props: ChatListItemProps) => {
      *  can access them in the next screen.
      */
     const onClick = () => {
-        navigation.navigate('ChatRoom', {
-            id: chatRoom.id,
-            name: user.name,
-        });
+        // navigate to chat room with this user
     }
 
 /*  Displays the users avatar, their name
@@ -58,16 +39,10 @@ const ChatListItem = (props: ChatListItemProps) => {
 
                     <View style={styles.midContainer}>
                         <Text style={styles.userName}>{user.name}</Text>
-                        <Text numberOfLines={1} style={styles.lastMessage}>{chatRoom.lastMessage.content}</Text>
+                        <Text style={styles.status}>{user.status}</Text>
                     </View>
-
+                    
                 </View>
-
-                {/** Styling the message date using the Moment module */}
-                <Text style={styles.time}>
-                    {moment(chatRoom.lastMessage.createdAt).format("DD/MM/YYYY")}
-                </Text>
-    
             </View>
 
         </TouchableWithoutFeedback>
@@ -75,4 +50,4 @@ const ChatListItem = (props: ChatListItemProps) => {
 
 };
 
-export default ChatListItem;
+export default ContactListItem;
