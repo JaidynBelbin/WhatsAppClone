@@ -6,6 +6,7 @@ import {useRoute} from '@react-navigation/native';
 import chatRoomData from '../data/Chats';
 import ChatMessage from '../components/ChatMessage';
 import BG from '../assets/images/BG.png';
+import InputBox from '../components/InputBox';
 
 const ChatRoomScreen = () => {
 
@@ -19,6 +20,8 @@ const ChatRoomScreen = () => {
                 renderItem={({ item }) => <ChatMessage message={item}/>}
                 inverted
             />
+
+            <InputBox/>
         </ImageBackground>
         
     )
