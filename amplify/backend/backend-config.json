@@ -1,1 +1,10 @@
-{}
+{
+  "auth": {
+    "whatsappclonecd5b9094": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
