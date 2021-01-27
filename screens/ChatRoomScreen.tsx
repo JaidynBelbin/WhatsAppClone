@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, ImageBackground} from 'react-native';
+import {FlatList, ImageBackground, View} from 'react-native';
 
 import {useRoute} from '@react-navigation/native';
 
@@ -15,15 +15,20 @@ const ChatRoomScreen = () => {
     return (
 
         <ImageBackground style={{width: '100%', height: '100%'}} source={BG}>
-            <FlatList 
-                data={chatRoomData.messages}
-                renderItem={({ item }) => <ChatMessage message={item}/>}
-                inverted
-            />
+            <View style={{
+                flex: 1,
+            }}>
 
+                <FlatList
+                    data={chatRoomData.messages}
+                    renderItem={({ item }) => <ChatMessage message={item}/>}
+                    inverted
+                />
+
+            </View>
             <InputBox/>
         </ImageBackground>
-        
+
     )
 }
 
