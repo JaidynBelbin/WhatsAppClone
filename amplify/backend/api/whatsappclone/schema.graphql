@@ -3,4 +3,25 @@ type User @model {
   name: String!
   imageUri: String
   status: String
+  chatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
+}
+
+# Connects to many users on one end...
+type ChatRoomUser
+@model
+@key(name: "byUser", fields: ["userID", "chatRoomID"])
+@key(name: "byChatRoom", fields: ["chatRoomID", "userID"]) {
+  id: ID!
+  userID: ID!
+  chatRoomID: ID!
+  user: User @connection(fields: ["userID"])
+  chatRoom: ChatRoom @connection(fields: ["chatRoomID"])
+}
+# and many chat rooms on the other.
+
+type ChatRoom @model {
+  id: ID!
+  # list of users
+  chatRoomUsers: [ChatRoomUser] @connection(keyName: "byChatRoom", fields: ["id"])
+  # list of messages
 }
