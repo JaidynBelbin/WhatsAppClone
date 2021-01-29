@@ -33,7 +33,6 @@ export default function Contacts() {
         
         ~removeIndex && usersArray.splice(removeIndex, 1);
         
-        
         setUsers(usersArray);
         
       } catch (e) {

@@ -11,6 +11,8 @@ import InputBox from '../components/InputBox';
 const ChatRoomScreen = () => {
 
     const route = useRoute();
+    
+    
 
     return (
 
@@ -26,7 +28,7 @@ const ChatRoomScreen = () => {
                 />
 
             </View>
-            <InputBox/>
+            <InputBox chatRoomID = {route.params.id}/>
         </ImageBackground>
 
     )
