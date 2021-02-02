@@ -15,6 +15,7 @@ import chatRoomData from '../data/Chats';
 import ChatMessage from '../components/ChatMessage';
 import BG from '../assets/images/BG.png';
 import InputBox from '../components/InputBox';
+import {onCreateMessage} from "../src/graphql/subscriptions";
 
 
 const ChatRoomScreen = () => {
@@ -24,23 +25,19 @@ const ChatRoomScreen = () => {
   
   const route = useRoute();
   
-  useEffect(() => {
-    
-    const fetchMessages = async () => {
-      const messagesData = await API.graphql(
-        graphqlOperation(
-          messagesByChatRoom, {
-            chatRoomID: route.params.id,
-            sortDirection: "DESC",
-          }
-        )
+  const fetchMessages = async () => {
+    const messagesData = await API.graphql(
+      graphqlOperation(
+        messagesByChatRoom, {
+          chatRoomID: route.params.id,
+          sortDirection: "DESC",
+        }
       )
-      
-      setMessages(messagesData.data.messagesByChatRoom.items);
-    }
+    )
     
-    fetchMessages();
-  }, [])
+    setMessages(messagesData.data.messagesByChatRoom.items);
+  }
+  
   
   useEffect(() => {
     
@@ -50,6 +47,40 @@ const ChatRoomScreen = () => {
     }
     
     getMyID();
+  }, [])
+  
+  // Fetching the messages initially upon rendering the UI
+  useEffect(() => {
+    fetchMessages();
+  }, [])
+  
+  useEffect(() => {
+  
+  }, [])
+  
+  // Handles subscribing to the messages in the DB, needs some work
+  // with the Observables in the state
+  useEffect(() => {
+    const subscription = API.graphql(
+      graphqlOperation(onCreateMessage)
+    ).subscribe({
+        next: (data) => {
+          const newMessage = data.value.data.onCreateMessage;
+          
+          // The new message is not in this chat room
+          if (newMessage.chatRoomID !== route.params.id) {
+            console.log("Message is in another room!")
+            return;
+          }
+  
+          // TODO: Fix the need to refetch all messages when one is sent
+          
+          fetchMessages();
+        }
+      });
+    
+    return () => subscription.unsubscribe();
+    
   }, [])
   
   

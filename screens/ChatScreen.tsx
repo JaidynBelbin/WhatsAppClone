@@ -22,7 +22,6 @@ export default function ChatScreen() {
   useEffect(() => {
     
     const fetchChatRooms = async () => {
-      
       try {
         
         const userInfo = await Auth.currentAuthenticatedUser();

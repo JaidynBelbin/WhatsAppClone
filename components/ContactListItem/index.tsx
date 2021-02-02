@@ -41,6 +41,7 @@ const ContactListItem = (props: ContactListItemProps) => {
         graphqlOperation(
           createChatRoom, {
             input: {
+              // Dummy last message ID to satisfy the ID! in the graphQL query
               lastMessageID: "03f8c9ea-4e46-4bc5-a51f-38b9bb03051b"
             }
           }
