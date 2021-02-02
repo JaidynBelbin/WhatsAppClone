@@ -16,7 +16,7 @@ import {
   graphqlOperation,
 } from 'aws-amplify'
 
-import { createMessage } from "../../src/graphql/mutations";
+import {createMessage, updateChatRoom} from "../../src/graphql/mutations";
 
 
 const InputBox = (props) => {
@@ -42,10 +42,28 @@ const InputBox = (props) => {
     console.warn(`Microphone`)
   }
   
+  const updateChatRoomLastMessage = async (messageID: string) => {
+    try {
+      await API.graphql(
+        graphqlOperation(
+          updateChatRoom, {
+            input: {
+              id: chatRoomID,
+              lastMessageID: messageID,
+            }
+          }
+        )
+      )
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  
+  // Creating the new message, updating the DB with the most recent message
   const onSendPress = async () => {
     
     try {
-      await API.graphql(
+      const newMessageData = await API.graphql(
         graphqlOperation(
           createMessage, {
             input: {
@@ -56,6 +74,9 @@ const InputBox = (props) => {
           }
         )
       )
+      
+      await updateChatRoomLastMessage(newMessageData.data.createMessage.id);
+      
     } catch (e) {
       console.log(e);
     }

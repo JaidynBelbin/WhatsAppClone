@@ -23,7 +23,6 @@ const ChatRoomScreen = () => {
   const [myID, setMyID]  = useState(null);
   
   const route = useRoute();
-  console.log(route.params.id);
   
   useEffect(() => {
     
@@ -38,7 +37,6 @@ const ChatRoomScreen = () => {
       )
       
       setMessages(messagesData.data.messagesByChatRoom.items);
-      
     }
     
     fetchMessages();

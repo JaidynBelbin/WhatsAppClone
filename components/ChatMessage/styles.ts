@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     },
 
     messageBox: {
-        borderRadius: 5,
+        borderRadius: 15,
         padding: 10,
     },
 

@@ -1,4 +1,32 @@
 {
     "Version": 5,
-    "ElasticsearchWarning": true
+    "ElasticsearchWarning": true,
+    "StackMapping": {
+        "ChatRoomTable": "ChatRoom",
+        "ChatRoomIAMRole": "ChatRoom",
+        "ChatRoomDataSource": "ChatRoom",
+        "GetChatRoomResolver": "ChatRoom",
+        "ListChatRoomResolver": "ChatRoom",
+        "CreateChatRoomResolver": "ChatRoom",
+        "UpdateChatRoomResolver": "ChatRoom",
+        "DeleteChatRoomResolver": "ChatRoom",
+        "GetAttChatRoomTableStreamArn": "ChatRoom",
+        "GetAttChatRoomDataSourceName": "ChatRoom",
+        "GetAttChatRoomTableName": "ChatRoom",
+        "UserchatRoomUserResolver": "ConnectionStack",
+        "ChatRoomUseruserResolver": "ConnectionStack",
+        "ChatRoomUserchatRoomResolver": "ConnectionStack",
+        "ChatRoomchatRoomUsersResolver": "ConnectionStack",
+        "UserTable": "User",
+        "UserIAMRole": "User",
+        "UserDataSource": "User",
+        "GetUserResolver": "User",
+        "ListUserResolver": "User",
+        "CreateUserResolver": "User",
+        "UpdateUserResolver": "User",
+        "DeleteUserResolver": "User",
+        "GetAttUserTableStreamArn": "User",
+        "GetAttUserDataSourceName": "User",
+        "GetAttUserTableName": "User"
+    }
 }
