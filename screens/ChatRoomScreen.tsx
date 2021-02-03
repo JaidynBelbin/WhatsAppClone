@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {FlatList, ImageBackground, View} from 'react-native';
 
 import {useRoute} from '@react-navigation/native';
@@ -25,6 +25,7 @@ const ChatRoomScreen = () => {
   
   const route = useRoute();
   
+  // Fetches all the messages in a given chat room
   const fetchMessages = async () => {
     const messagesData = await API.graphql(
       graphqlOperation(
@@ -38,48 +39,45 @@ const ChatRoomScreen = () => {
     setMessages(messagesData.data.messagesByChatRoom.items);
   }
   
+  const getMyID = async () => {
+    const userInfo = await Auth.currentAuthenticatedUser();
+    setMyID(userInfo.attributes.sub);
+  }
   
   useEffect(() => {
-    
-    const getMyID = async () => {
-      const userInfo = await Auth.currentAuthenticatedUser();
-      setMyID(userInfo.attributes.sub);
-    }
-    
     getMyID();
   }, [])
   
-  // Fetching the messages initially upon rendering the UI
   useEffect(() => {
     fetchMessages();
   }, [])
   
-  useEffect(() => {
   
-  }, [])
-  
-  // Handles subscribing to the messages in the DB, needs some work
-  // with the Observables in the state
+  //
+  //  Handles subscribing to new messages
+  //
   useEffect(() => {
     const subscription = API.graphql(
       graphqlOperation(onCreateMessage)
     ).subscribe({
         next: (data) => {
+          
           const newMessage = data.value.data.onCreateMessage;
           
-          // The new message is not in this chat room
+          // Checking if the message is in this chat room
           if (newMessage.chatRoomID !== route.params.id) {
             console.log("Message is in another room!")
             return;
           }
-  
-          // TODO: Fix the need to refetch all messages when one is sent
-          
+         
+          // TODO: Figure out how to optimise the fetching of messages.
           fetchMessages();
         }
       });
     
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    }
     
   }, [])
   
@@ -92,9 +90,10 @@ const ChatRoomScreen = () => {
           }}>
 
               <FlatList
-                  data={messages}
-                  renderItem={({ item }) => <ChatMessage myID = {myID} message={item}/>}
-                  inverted
+                extraData={messages}
+                data={messages}
+                renderItem={({ item }) => <ChatMessage myID = {myID} message={item}/>}
+                inverted
               />
 
           </View>

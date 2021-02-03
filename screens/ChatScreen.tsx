@@ -14,36 +14,54 @@ import {
 } from 'aws-amplify';
 
 import {getUser} from './queries';
+import {onUpdateChatRoom} from "../src/graphql/subscriptions";
 
-export default function ChatScreen() {
+export default function ChatScreen(this: any) {
   
   const [chatRooms, setChatRooms] = useState([]);
   
+  // Fetches the chatRoom data
+  const fetchChatRooms = async () => {
+    try {
+      
+      const userInfo = await Auth.currentAuthenticatedUser();
+      const userData = await API.graphql(
+        graphqlOperation(
+          getUser, {
+            id: userInfo.attributes.sub,
+          }
+        )
+      )
+      
+      setChatRooms(userData.data.getUser.chatRoomUser.items)
+      
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  
+  // Fetching the chat rooms when the component first loads
+  useEffect(() => {
+    fetchChatRooms();
+  }, [])
+  
+  // Refetches the chat room data when the onUpdateChatRoom sub fires
   useEffect(() => {
     
-    const fetchChatRooms = async () => {
-      try {
+    const subscription = API.graphql(
+      graphqlOperation(onUpdateChatRoom)
+    ).subscribe({
+      next: (data) => {
         
-        const userInfo = await Auth.currentAuthenticatedUser();
+        fetchChatRooms();
         
-        const userData = await API.graphql(
-          graphqlOperation(
-            getUser, {
-              id: userInfo.attributes.sub,
-            }
-          )
-        )
-        
-        setChatRooms(userData.data.getUser.chatRoomUser.items)
-        
-      } catch (e) {
-        console.log(e);
       }
-    }
+    });
     
-    fetchChatRooms();
+    return () => subscription.unsubscribe();
     
   }, [])
+  
   
     return (
         <View style={styles.container}>
@@ -54,6 +72,7 @@ export default function ChatScreen() {
              */}
           <FlatList
           style={{width: '100%'}}
+          extraData={chatRooms}
           data = {chatRooms}
           renderItem = { ({item}) => <ChatListItem chatRoom={item.chatRoom}/> }
           keyExtractor = {(item) => item.id}
