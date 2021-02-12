@@ -23,7 +23,6 @@ export default function ChatScreen(this: any) {
   // Fetches the chatRoom data
   const fetchChatRooms = async () => {
     try {
-      
       const userInfo = await Auth.currentAuthenticatedUser();
       const userData = await API.graphql(
         graphqlOperation(
@@ -42,19 +41,16 @@ export default function ChatScreen(this: any) {
   
   // Fetching the chat rooms when the component first loads
   useEffect(() => {
-    fetchChatRooms();
+    fetchChatRooms().then();
   }, [])
   
   // Refetches the chat room data when the onUpdateChatRoom sub fires
   useEffect(() => {
-    
     const subscription = API.graphql(
       graphqlOperation(onUpdateChatRoom)
     ).subscribe({
-      next: (data) => {
-        
-        fetchChatRooms();
-        
+      next: () => {
+        fetchChatRooms().then();
       }
     });
     
@@ -65,11 +61,6 @@ export default function ChatScreen(this: any) {
   
     return (
         <View style={styles.container}>
-
-            {/** A FlatList which uses the data from ChatRooms.ts
-             * The renderItem option is a function which renders each
-             *
-             */}
           <FlatList
           style={{width: '100%'}}
           extraData={chatRooms}
@@ -77,7 +68,6 @@ export default function ChatScreen(this: any) {
           renderItem = { ({item}) => <ChatListItem chatRoom={item.chatRoom}/> }
           keyExtractor = {(item) => item.id}
           />
-          
           <NewMessageButton />
 
         </View>
